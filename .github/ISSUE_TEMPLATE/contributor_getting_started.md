@@ -1,7 +1,7 @@
 ---
 name: Getting Started with the Enhancement Tracking Process
 about: Enhancement Contributor Workflow 
-title: ''
+title: 'Help Needed with the Enhancement Tracking Process'
 labels: 'support/contributor'
 assignees: 'calebamiles'
 ---
