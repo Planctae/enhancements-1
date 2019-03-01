@@ -9,7 +9,7 @@ assignees: 'calebamiles'
 ## Enhancements Tracking Introduction
 
 This is a space for someone shepherding an enhancement through the release process
-to coordinate with the release team to verify that
+to coordinate with the release team to verify that:
 
 - [ ] the enhancement is part of a SIG sponsored KEP
 - [ ] the shepherd(s) are updating tests
@@ -21,16 +21,15 @@ to coordinate with the release team to verify that
 
 Each accepted enhancement will correspond to an "Enhancements Tracking Receipt"
 that is checked into this repository. In the future this receipt file will be
-replace with a pointer to KEP content and there will be no need for almost anyone
+replaced with a pointer to KEP content and there will be no need for almost anyone
 to produce a receipt manually.
 
 
 With the introduction of [draft pull requests][], along with our existing system for
-[marking a pull request as WIP][] it not unreasonable to expect that the requester
+[marking a pull request as WIP][], it not unreasonable to expect that the requester
 of enhancement tracking to coordinate with the sponsoring SIG, as well as SIG Docs,
-to open draft pull requests before tracking by the Release Team begins. Currently an
-enhancement tracking receipt has the following form where all fields are mandatory:
-
+to open draft pull requests before tracking by the Release Team begins. Currently, an
+enhancement tracking receipt has the following form where **all fields are mandatory**:
 
 ```
 ---
