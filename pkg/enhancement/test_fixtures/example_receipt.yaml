@@ -1,0 +1,20 @@
+---
+title: "A Great Idea, Delivered Incrementally"
+authors:
+- "justaugustus"
+- "calebamiles"
+sponsoring_sig: "SIG Release"
+affected_subprojects:
+- "release-engineering"
+kep_location: "https://github.com/kubernetes/enhancements/blob/master/keps/0001a-meta-kep-implementation.md"
+test_locations:
+- "https://github.com/planctae/enhancements-tracking-ng/blob/master/pkg/enhancement/check_receipt_test.go"
+- "https://github.com/planctae/enhancements-tracking-ng/blob/master/pkg/enhancement/extract_receipt_test.go"
+- "https://github.com/planctae/enhancements-tracking-ng/blob/master/pkg/enhancement/check_receipt_test.go"
+release_note_location: "https://github.com/planctae/enhancements-tracking-ng/blob/master/README.md" # should be retrievable with http.Get()
+documentation_locations:
+- "https://github.com/planctae/enhancements-tracking-ng/blob/master/guides/enhancement-authors.md"
+- "https://github.com/planctae/enhancements-tracking-ng/blob/master/guides/release-team.md"
+contact_email: "kubernetes-sig-release@googlegroups.com" # may be a "plus aliased" SIG mailing list
+current_maturity: "RC" # must be one of RC|alpha|beta|GA
+target_maturity: "alpha" # must be one mof RC|alpha|beta|GA
