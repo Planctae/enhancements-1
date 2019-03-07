@@ -1,20 +1,20 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"path"
 	"strings"
 
 	"github.com/manifoldco/promptui"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 
 	"github.com/planctae/enhancements-tracking-ng/pkg/git"
+	"github.com/planctae/enhancements-tracking-ng/pkg/settings"
 )
 
 // proposeCmd represents the propose command
-var proposeCmd = &cobra.Command{
+var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "configure the reltrackr tool for use",
 	Long: `configure walks through a series of interactive prompts to create
@@ -23,17 +23,9 @@ be run one time.
 `,
 	Args: cobra.ExactArgs(0), // accept no arguments
 	RunE: func(cmd *cobra.Command, args []string) error {
-		validateReceiptsLocation := func(input string) error {
-			if isAbs := path.IsAbs(input); isAbs != true {
-				return errors.New("enhancements receipts repository must be a full path")
-			}
-
-			return nil
-		}
-
 		promptReceiptsLocation := promptui.Prompt{
-			Label:    "full path to enhancements receipts repository",
-			Validate: validateReceiptsLocation,
+			Label:    "path to enhancements receipts repository",
+			Validate: validatePossiblyExpandablePath,
 		}
 
 		repoLocation, err := promptReceiptsLocation.Run()
@@ -41,27 +33,17 @@ be run one time.
 			return err
 		}
 
-		_, err = os.Stat(repoLocation)
+		expandedLocation, err := homedir.Expand(repoLocation)
+		if err != nil {
+			return err
+		}
+
+		_, err = os.Stat(expandedLocation)
 		switch {
 		case os.IsNotExist(err):
-			validateCloneChoice := func(input string) error {
-				switch strings.ToLower(input) {
-				case "y":
-					return nil
-				case "n":
-					return nil
-				case "yes":
-					return nil
-				case "no":
-					return nil
-				default:
-					return fmt.Errorf("sorry, don't understand choice: %s. Try one of y|n|yes|no", input)
-				}
-			}
-
 			promptCloneReceipts := promptui.Prompt{
 				Label:    "it doesn't seem like you have a copy of the repo. Clone?",
-				Validate: validateCloneChoice,
+				Validate: validateYNChoice,
 			}
 
 			cloneRepo, err := promptCloneReceipts.Run()
@@ -71,7 +53,7 @@ be run one time.
 
 			if strings.HasPrefix(cloneRepo, "y") {
 				// one day we'll properly fork this
-				err = git.Clone("https://github.com/planctae/enhancements-tracking-ng", repoLocation, os.Stdout)
+				err = git.Clone("https://github.com/kubernetes/enhancements", expandedLocation, os.Stdout)
 				if err != nil {
 					return err
 				}
@@ -81,6 +63,65 @@ be run one time.
 			return err
 		}
 
+		promptSaveSettings := promptui.Prompt{
+			Label:    "save settings?",
+			Validate: validateYNChoice,
+		}
+
+		saveSettings, err := promptSaveSettings.Run()
+		if err != nil {
+			return err
+		}
+
+		if strings.HasPrefix(saveSettings, "y") {
+			runtime, err := settings.NewRuntime(expandedLocation)
+			if err != nil {
+				return err
+			}
+
+			promptSaveLocation := promptui.Prompt{
+				Label:    "file with *.yaml extension to write",
+				Validate: validatePossiblyExpandablePath,
+			}
+
+			saveLocation, err := promptSaveLocation.Run()
+			if err != nil {
+				return err
+			}
+
+			expandedLocation, err = homedir.Expand(saveLocation)
+			if err != nil {
+				return err
+			}
+
+			err = runtime.Persist(expandedLocation)
+			if err != nil {
+				return err
+			}
+		}
+
+		fmt.Println("")
+		fmt.Println("congratulations! preflight check complete")
 		return nil
 	},
+}
+
+var validateYNChoice = func(input string) error {
+	switch strings.ToLower(input) {
+	case "y":
+		return nil
+	case "n":
+		return nil
+	case "yes":
+		return nil
+	case "no":
+		return nil
+	default:
+		return fmt.Errorf("sorry, didn't understand choice: %s. Try one of y|n|yes|no", input)
+	}
+}
+
+var validatePossiblyExpandablePath = func(input string) error {
+	_, err := homedir.Expand(input)
+	return err
 }

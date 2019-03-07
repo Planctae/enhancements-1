@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-
 	"github.com/spf13/cobra"
 )
 
@@ -54,12 +53,10 @@ the course of the release. The following workflows are supported:
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	var release string
-	var cfgFile string
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.reltrackr.yaml)")
 	rootCmd.PersistentFlags().StringVar(&release, "release", "", "release to operate on")
 
-	rootCmd.AddCommand(proposeCmd)
+	rootCmd.AddCommand(configureCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
