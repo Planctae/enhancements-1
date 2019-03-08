@@ -13,7 +13,6 @@ import (
 	"github.com/planctae/enhancements-tracking-ng/pkg/settings"
 )
 
-// proposeCmd represents the propose command
 var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "configure the reltrackr tool for use",

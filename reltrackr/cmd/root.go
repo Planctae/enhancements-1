@@ -20,7 +20,7 @@ the course of the release. The following workflows are supported:
    0. ensure you understand the enhancements tracking proceedure:
         https://github.com/planctae/enhancements-tracking-ng/blob/master/guides/release-team.md 
    1. ensure your application config is valid (reltrackr configure)
-   2. reltrackr init release-1.15
+   2. reltrackr init --release release-1.15
    3. submit changes via a pull request for final review
 
 -> A Kubernetes contributor importing an existing enhancements tracking issue:

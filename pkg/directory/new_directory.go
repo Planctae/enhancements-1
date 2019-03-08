@@ -41,6 +41,11 @@ func New(p string, releaseName string) error {
 		return err
 	}
 
+	err = os.MkdirAll(filepath.Join(releaseDir, atRiskDirname), os.ModePerm)
+	if err != nil {
+		return err
+	}
+
 	ownersBytes, err := render.ReleaseOwners(releaseName)
 	if err != nil {
 		return err
@@ -58,6 +63,7 @@ const (
 	proposedDirname = "proposed"
 	acceptedDirname = "accepted"
 	rejectedDirname = "rejected"
+	atRiskDirname   = "at-risk"
 	shippedDirname  = "shipped"
 	slippedDirname  = "slipped"
 

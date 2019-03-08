@@ -29,6 +29,7 @@ var _ = Describe("creating a new release tracking directory", func() {
 			Expect(filepath.Join(releaseDir, "proposed")).To(BeADirectory(), "expected a `proposed` directory to be contained within the release directory")
 			Expect(filepath.Join(releaseDir, "accepted")).To(BeADirectory(), "expected an `accepted` directory to be contained within the release directory")
 			Expect(filepath.Join(releaseDir, "rejected")).To(BeADirectory(), "expected a `rejected` directory to be contained within the release directory")
+			Expect(filepath.Join(releaseDir, "at-risk")).To(BeADirectory(), "expected an `at-risk` directory to be contained within the release directory")
 			Expect(filepath.Join(releaseDir, "shipped")).To(BeADirectory(), "expected a `shipped` directory to be contained within the release directory")
 			Expect(filepath.Join(releaseDir, "slipped")).To(BeADirectory(), "expected a `slipped` directory to be contained within the release directory")
 			Expect(filepath.Join(releaseDir, "OWNERS")).To(BeARegularFile(), "expected an `OWNERS` file to be contained wtihin the release release directory")

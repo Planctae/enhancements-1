@@ -22,16 +22,18 @@ const (
 	ConfigDirName     = ".reltrackr"
 )
 
+const (
+	configType = "yaml"
+)
+
 func NewRuntime(receiptsLocation string) (Runtime, error) {
 	if _, statErr := os.Stat(receiptsLocation); os.IsNotExist(statErr) {
 		return nil, fmt.Errorf("refusing to create runtime settings with non existent location: %s", receiptsLocation)
 	}
 
 	v := viper.New()
-	v.SetConfigType("yaml")
+	v.SetConfigType(configType)
 	v.SetConfigName(Filename)
-	v.SetEnvPrefix(EnvPrefix)
-	v.AutomaticEnv()
 
 	v.Set(ReceiptsConfigKey, receiptsLocation)
 
